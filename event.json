@@ -1,0 +1,8 @@
+{
+  "host": "http://localhost:9200/",
+  "index": "userkeyword",
+  "doc_type": "logs",
+  "query": "銀座 ランチ",
+  "exclude_pattern": ".{1}",
+  "size": 10
+}

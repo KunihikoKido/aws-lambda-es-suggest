@@ -1,0 +1,35 @@
+{
+  "size": 0,
+  "query": {
+    "bool": {
+      "should": [{
+        "match": {
+          "keyword.autocomplete": {
+            "query": "{{query}}"
+          }
+        }
+      }, {
+        "match": {
+          "keyword.readingform": {
+            "query": "{{query}}",
+            "fuzziness": "AUTO",
+            "operator": "and"
+          }
+        }
+      }]
+    }
+  },
+  "aggs": {
+    "keywords": {
+      "terms": {
+        "field": "keyword",
+        "include": "{{include_prefix}}.*",
+        "exclude": "{{exclude_pattern}}",
+        "order": {
+          "_count": "desc"
+        },
+        "size": "{{max_size}}"
+      }
+    }
+  }
+}

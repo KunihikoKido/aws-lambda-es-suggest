@@ -1,0 +1,3 @@
+[console_scripts]
+python-lambda-local = lambda_local:main
+

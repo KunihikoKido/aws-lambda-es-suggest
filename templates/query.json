@@ -28,7 +28,7 @@
         "order": {
           "_count": "desc"
         },
-        "size": "{{max_size}}"
+        "size": "{{size}}"
       }
     }
   }

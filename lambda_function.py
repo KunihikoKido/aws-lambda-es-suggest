@@ -36,16 +36,17 @@ class Event(dict):
         def _normalize_whitespace(query):
             return re.sub(r'\s{2,}', '\u0020', query)
 
-        query = self['query']
-        if query is None:
-            return ''
-
+        query = self.get('query', '')
         query = _normalize(query)
         query = _normalize_whitespace(query)
         return query.lower()
 
     @property
-    def include_prefix(self):
+    def cleaned_query(self):
+        return self.get('query', '')
+
+    @property
+    def cleaned_include_prefix(self):
         num = len(self.normalized_query.split(' '))
         if num == 1:
             return ""
@@ -55,26 +56,23 @@ class Event(dict):
         )
 
     @property
-    def exclude_pattern(self):
-        pattern = self['exclude_pattern']
-        if pattern is None:
-            return ''
-        return pattern
+    def cleaned_exclude_pattern(self):
+        return self.get('exclude_pattern', '')
 
     @property
-    def max_size(self):
-        size = self['size']
-        if size is None or size > settings.MAX_SUGGEST_SIZE:
+    def cleaned_size(self):
+        size = self.get('size', settings.DEFAULT_SUGGEST_SIZE)
+        if size > settings.MAX_SUGGEST_SIZE:
             return settings.DEFAULT_SUGGEST_SIZE
-        return self['size']
+        return size
 
     @property
     def body(self):
         context = {
-            'query': self.query,
-            'exclude_pattern': self.exclude_pattern,
-            'include_prefix': self.include_prefix,
-            'max_size': self.max_size
+            'query': self.cleaned_query,
+            'exclude_pattern': self.cleaned_exclude_pattern,
+            'include_prefix': self.cleaned_include_prefix,
+            'size': self.cleaned_size
         }
         return pystache.render(settings.QUERY_TEMPLATE, context)
 

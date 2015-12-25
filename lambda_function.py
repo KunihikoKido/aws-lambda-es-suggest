@@ -11,7 +11,7 @@ from elasticsearch import Elasticsearch
 
 import settings
 
-logger = logging.getLogger()
+logger = logging.getLogger(__name__)
 logger.setLevel(settings.LOG_LEVEL)
 
 

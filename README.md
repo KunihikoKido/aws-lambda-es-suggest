@@ -1,5 +1,6 @@
 # Elasticsearch Suggest for AWS Lambda
 ## About
+Elasticsearch をバックエンドに、キーワードサジェストAPIをサーバーレスで実装するためのLambdaファンクションです。
 
 #### Runtime
 Python 2.7
@@ -119,4 +120,36 @@ fab aws-invoke
 ## Show fabric Available commands
 ```bash
 fab -l
+```
+
+## with Amazon API Gateway
+### _Example Settings:_
+
+_Method and Resources:_
+```
+GET /suggest
+```
+
+_Query Strings:_
+* ``q``: キーワード
+
+_Cross-Origin Resource Sharing (CORS):_
+
+※クロスドメインで使用する場合は有効にする。
+
+_Request mapping template:_
+```json
+{
+    "query": "$util.urlDecode($input.params('q'))",
+    "host": "http://<your_elasticsearch_server:9200>",
+    "index": "userkeyword",
+    "doc_type": "logs",
+    "exclude_pattern": ".{1}",
+    "size": 8
+}
+```
+
+_Example Request:_
+```
+GET /suggest?q=%E9%8A%80%E5%BA%A7%20%E3%83%A9%E3%83%B3%E3%83%81
 ```
